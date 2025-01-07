@@ -4,11 +4,10 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
  
-import { Button } from "@/components/ui/button"
+
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -16,8 +15,8 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { login } from "../Actions/Actions"
-import Link from "next/link"
-import { useState } from "react"
+
+
 
 const formSchema = z.object({
      password: z
@@ -31,7 +30,7 @@ const formSchema = z.object({
 })
 
 function ProfileForm(){
-    const [useOTP,setUseOTP] = useState(false)
+   
     const form = useForm<z.infer<typeof formSchema>>({
         resolver:zodResolver(formSchema),
         defaultValues:{
@@ -82,10 +81,7 @@ function ProfileForm(){
               <div className="flex flex-col md:flex-row space-y-3 md:space-y-0 md:space-x-2 ">
                 <button className="p-2 rounded-md text-white bg-green-500 w-full" formAction={login}>Log in</button>
 
-<Link href={'/Auth/Login/LoginwithOtp'}>
-<button className="p-2 rounded-md text-white bg-green-500 w-full" onClick={()=>setUseOTP(true)}>Log in with OTP</button>
 
-</Link>
               </div>
             </form>
           </Form>

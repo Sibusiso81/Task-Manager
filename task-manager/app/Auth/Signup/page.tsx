@@ -3,12 +3,10 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
- 
-import { Button } from "@/components/ui/button"
+
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -16,6 +14,7 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { signup } from "../Actions/Actions"
+import Link from "next/link"
 
 const formSchema = z.object({
      password: z
@@ -79,7 +78,9 @@ function ProfileForm(){
               <div className="flex flex-col md:flex-row space-y-3 md:space-y-0 md:space-x-3 ">
                 <button className="p-2 rounded-md text-white bg-green-500 " formAction={signup}>Sign up</button>
                 <p className="text-center text-muted-foreground">or</p>
-                <button className="p-2 rounded-md text-white bg-green-500 ">Log in</button>
+<Link href={'/Auth/Login'}>
+<button className="p-2 rounded-md text-white bg-green-500 ">Log in</button>
+</Link>
 
               </div>
             </form>
