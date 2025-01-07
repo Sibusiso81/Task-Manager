@@ -3,7 +3,7 @@
 import { createClient } from "@/lib/supabase/server"
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
-import { domainToUnicode } from "url"
+
 
 
 export async function login(formData:FormData) {
@@ -51,39 +51,4 @@ export default async function logout(){
       }
     
   
-}
-export  async function sendOtp(formData:FormData){
-    const supabase  = await createClient();
-    const phoneNumber  = formData.get('number') as string
-    console.log(phoneNumber)
-    const { data, error } = await supabase.auth.signInWithOtp({
-
-        phone:phoneNumber,
-      })
-      if(error){
-        console.log(error)
-        redirect('/error')
-      }
-      console.log(data)
-}
-
-export async function verifyOtp(formData:FormData){
-    const supabase  = await createClient();
-    
-    const {
-        data:{session},
-        error
-    } = await supabase.auth.verifyOtp({
-        phone: formData.get('number') as string,
-        token: formData.get('code') as string,
-        type:'sms',
-    })
-    if(error){
-        console.log(error)
-        redirect('/error')
-      }
-
-      console.log(session)
-          revalidatePath('/', 'layout')
-      redirect('/')
 }
