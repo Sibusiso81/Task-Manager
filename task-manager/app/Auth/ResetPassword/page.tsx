@@ -14,16 +14,12 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { login } from "../Actions/Actions"
-import Link from "next/link"
+import {  resetPassword } from "../Actions/Actions"
+
 
 
 
 const formSchema = z.object({
-     password: z
-    .string()
-    .min(2, { message: "Password must be at least 2 characters long." })
-    .max(50, { message: "Password must be no longer than 50 characters." }),
   email: z
     .string()
     .email({ message: "Please enter a valid email address." })
@@ -35,7 +31,6 @@ function ProfileForm(){
     const form = useForm<z.infer<typeof formSchema>>({
         resolver:zodResolver(formSchema),
         defaultValues:{
-            password:'',
             email:'',
         }
     });
@@ -60,37 +55,12 @@ function ProfileForm(){
                   </FormItem>
                 )}
               />
-              <FormField
-                control={form.control}
-                name="password"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Password</FormLabel>
-                    <FormControl>
-                      <Input
-                        className="p-4"
-                        placeholder="Enter your password"
-                        type="password"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              
       
       <div className="flex flex-col  max-w-screen-sm space-y-2">
-                <button className="p-1 place-self-end text-sm"><span className="text-green-500">Forgot Password ?</span></button>
-                <button className="p-2 rounded-md text-white bg-green-500 w-full " formAction={login}>Log in</button>
-                <div className="flex flex-row space-x-2 items-center">
-                  <div className="border w-full bg-neutral-900"></div>
-                  <p className="text-center text-muted-foreground">or</p>
-                  <div className="border w-full bg-neutral-900"></div>
-                </div>
-              
-<Link href={'/Auth/Signup'}>
-<button className="p-2 rounded-md text-white bg-green-500 w-full">Sign up</button>
-</Link>
+
+                <button className="p-2 rounded-md text-white bg-green-500 w-full " formAction={resetPassword}>Reset password</button>
+                
 
               </div>
             </form>
@@ -105,7 +75,7 @@ function page() {
     <section className="max-w-screen-md h-screen flex flex-col lg:flex-row p-4 space-y-6 mx-auto justify-center items-center">
     
     <div className="w-full md:w-1/2 space-y-4 justify-center items-center">
-      <h1 className="text-xl font-semibold text-center">Welcome</h1>
+      <h1 className="text-xl font-semibold text-center">Forgot password </h1>
       <ProfileForm />
     
     </div>

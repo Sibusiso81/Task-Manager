@@ -55,3 +55,27 @@ export default async function logout(){
     
   
 }
+export async function resetPassword(formData:FormData){
+  const data = formData.get('email') as string ;
+  if (!data) {
+    console.log('Email is required');
+    redirect('/Auth/Error');
+    return;
+  }
+  const supabase  = await createClient();
+ await supabase.auth.resetPasswordForEmail(data,{
+redirectTo:'http://localhost:3000/Auth/ChangePassword'
+  })
+}
+
+export async function changePassword(formData:FormData){
+  const data = formData.get('password') as string
+  if(!data){
+    console.log('Passowrd is required');
+    redirect('/Auth/Error');
+    return;
+  }
+  const supabase  = await createClient();
+  await supabase.auth.updateUser({ password: data })
+  redirect('/Auth/Login')
+}

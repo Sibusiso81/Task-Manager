@@ -75,11 +75,16 @@ function ProfileForm(){
                 )}
               />
       
-              <div className="flex flex-col md:flex-row space-y-3 md:space-y-0 md:space-x-3 ">
+              <div className="flex flex-col  max-w-screen-sm space-y-2">
+                <button className="p-1 place-self-end text-sm"><span className="text-green-500">Forgot Password ?</span></button>
                 <button className="p-2 rounded-md text-white bg-green-500 " formAction={signup}>Sign up</button>
-                <p className="text-center text-muted-foreground">or</p>
+                <div className="flex flex-row space-x-2 items-center">
+                  <div className="border w-full bg-neutral-900"></div>
+                  <p className="text-center text-muted-foreground">or</p>
+                  <div className="border w-full bg-neutral-900"></div>
+                </div>
 <Link href={'/Auth/Login'}>
-<button className="p-2 rounded-md text-white bg-green-500 ">Log in</button>
+<button className="p-2 rounded-md text-white bg-green-500 w-full ">Log in</button>
 </Link>
 
               </div>
