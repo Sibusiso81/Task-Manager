@@ -6,6 +6,7 @@ import { redirect } from 'next/navigation'
 
 
 
+
 export async function login(formData:FormData) {
     const supabase = await createClient()
 
@@ -40,9 +41,10 @@ export async function signup(formData:FormData){
     redirect('/Auth/Error');
     return;
   }
-
   revalidatePath('/', 'layout')
   redirect('/')
+
+
 };
 export default async function logout(){
     const supabase  = await createClient();
@@ -52,7 +54,8 @@ export default async function logout(){
         redirect('/Auth/Error');
         return;
       }
-    
+      revalidatePath('/', 'layout')
+      redirect('/')
   
 }
 export async function resetPassword(formData:FormData){
@@ -64,7 +67,7 @@ export async function resetPassword(formData:FormData){
   }
   const supabase  = await createClient();
  await supabase.auth.resetPasswordForEmail(data,{
-redirectTo:'http://localhost:3000/Auth/ChangePassword'
+redirectTo:'https://task-manager-zeta-green.vercel.app/ChangePassword'
   })
 }
 

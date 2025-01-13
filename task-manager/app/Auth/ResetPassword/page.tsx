@@ -59,7 +59,7 @@ function ProfileForm(){
       
       <div className="flex flex-col  max-w-screen-sm space-y-2">
 
-                <button className="p-2 rounded-md text-white bg-green-500 w-full " formAction={resetPassword}>Reset password</button>
+                <button className="p-2 rounded-md text-white bg-blue-500 w-full " formAction={resetPassword}>Reset password</button>
                 
 
               </div>
@@ -72,10 +72,10 @@ function ProfileForm(){
 
 function page() {
   return (
-    <section className="max-w-screen-md h-screen flex flex-col lg:flex-row p-4 space-y-6 mx-auto justify-center items-center">
-    
+    <section className="max-w-screen-md h-screen flex flex-col p-4 space-y-6 mx-auto justify-center items-center">
+    <h1 className="text-2xl font-bold text-blue-600">Aspire ®</h1>
     <div className="w-full md:w-1/2 space-y-4 justify-center items-center">
-      <h1 className="text-xl font-semibold text-center">Forgot password </h1>
+      <h1 className="text-xl font-semibold text-center">Reset Password </h1>
       <ProfileForm />
     
     </div>

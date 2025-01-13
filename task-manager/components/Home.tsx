@@ -1,23 +1,15 @@
-"use client";
-
-import About from "@/components/About";
-import Contact from "@/components/Contact";
-import Features from "@/components/Features";
-import Steps from "@/components/Steps";
+import React from 'react'
 import Image from "next/image";
 import { AnimatePresence } from "framer-motion";
 import Link from 'next/link';
-
+import { Button } from './ui/button';
 import { Menu,  X } from 'lucide-react';
+import Navbar from './ui/Navbar';
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import Navbar from "@/components/ui/Navbar";
-
-export default function Home() {
-      const [isOpen, setIsOpen] = useState<boolean>(false);
+function Home() {
+    const [isOpen, setIsOpen] = useState<boolean>(false);
   return (
-    <main className="overflow-x-hidden space-y-10 ">
-      <section  className='w-screen h-fit flex flex-col overflow-x-hidden ' id="Home">
+   <section  className='flex flex-col overflow-x-hidden'>
      <div id="Home">
     
         <div className="w-full p-6 border-[#eaeaea] flex  space-x-4 lg:justify-between  justify-between rounded-md relative z-40 flex-1 items-center ">
@@ -55,7 +47,7 @@ export default function Home() {
             <div className="hidden lg:flex flex-row space-x-2">
               <Link href={"/Auth/Login"}>
           
-                <Button className="rounded-lg" variant={'default'}>Log In</Button>
+                <Button>Log In</Button>
               </Link>
             </div>
             
@@ -73,13 +65,13 @@ export default function Home() {
           {isOpen ? <Navbar /> : null}
         </AnimatePresence>
       </div>
-      <section className=" w-screen h-fit  my-auto flex flex-col lg:flex-row justify-between   p-2 lg:p-10 space-y-8 md:space-y-0">
-        <div className="w-full lg:w-1/2 place-self-end space-y-3 p-4 ">
-          <h1 className="text-3xl md:text-4xl xl:text-6xl font-medium text-wrap   ">
+      <section className=" w-screen h-fit lg:h-screen my-auto flex flex-col lg:flex-row justify-between  p-2 lg:p-10 space-y-8 md:space-y-0">
+        <div className="w-full lg:w-1/2 my-auto space-y-3 p-4">
+          <h1 className="text-3xl md:text-5xl lg:text-6xl font-medium text-wrap   ">
             Break down your yearly ambitions into manageable daily tasks and
             give yourself a clear path to success .
           </h1>
-          <p className="text-md xl:text-lg text-neutral-500">
+          <p className="text-md text-muted-foreground ">
             Stay focused, organized, and consistently on track as you work
             toward accomplishing what matters most,Simplify your journey to
             success with personalized, goal-focused guidance that keeps you on
@@ -91,17 +83,17 @@ export default function Home() {
                 {" "}
                 Get Started{" "}
               </button> */}
-              <Button variant={'outline'} className="rounded-lg w-full h-full ">
+              <Button variant={'outline'} className=" rounded-lg w-full h-full ">
               Get Started{" "}
               </Button>
             </Link>
             <Link href={"#Contact"}>
-              <Button variant={'default'} className="rounded-lg">Contact</Button>
+              <Button variant={'default'}>Contact</Button>
             </Link>
           </div>
         </div>
-        <div className="grid grid-cols-2 gap-4 h-1/2 lg:w-1/2 lg:place-self-center">
-          <div className="col-span-2 md:col-span-1 lg:flex flex-col space-y-4 h-full ">
+        <div className="grid grid-cols-2 gap-4 h-1/2 lg:w-1/2">
+          <div className="col-span-2 md:col-span-1 lg:flex flex-col space-y-4 h-full">
             <Image
               src="/roman-bozhko-PypjzKTUqLo-unsplash.jpg" // Path relative to 'public'
               alt="Task Manager Inspiration"
@@ -116,10 +108,10 @@ export default function Home() {
               width={800} // Specify width
               height={600} // Specify height
               priority // Optional: Preload the image
-              className="rounded-lg lg:h-full hidden md:block"
+              className="rounded-lg lg:h-full hidden "
             />
           </div>
-          <div className="col-span-2 md:col-span-1 ">
+          <div className="col-span-2 md:col-span-1 hidden">
             <Image
               src="/marissa-grootes-flRm0z3MEoA-unsplash.jpg" // Path relative to 'public'
               alt="Task Manager Inspiration"
@@ -127,7 +119,7 @@ export default function Home() {
               height={800} // Specify height
               priority // Optional: Preload the image
               
-              className="rounded-lg md:h-full hidden md:block"
+              className="rounded-lg md:h-full hidden"
             />
             
           </div>
@@ -135,12 +127,7 @@ export default function Home() {
       </section>
     
    </section>
-      <About/>
-      
-      <Features/>
-      <Steps/>
-      <Contact/>
-        
-    </main>
-  );
+  )
 }
+
+export default Home

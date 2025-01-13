@@ -53,7 +53,7 @@ function Navbar() {
         ].map((_, i) => (
           <motion.div 
           key={i} 
-          className="w-full h-full bg-green-500"
+          className="w-full h-full bg-blue-600"
           variants={children}
           initial='hidden'
           animate='show'
@@ -69,7 +69,7 @@ function Navbar() {
           <li className="overflow-hidden">
             <motion.div variants={navLink} initial='hidden' animate='show' exit='exit' className=" p-1">
               <Link href={'/About'} className="text-[40px] md:text-[60px]  h-fit p-1 ">
-              About
+              
               </Link>
             </motion.div>
           </li>

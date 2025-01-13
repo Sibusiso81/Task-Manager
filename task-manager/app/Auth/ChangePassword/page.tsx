@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { changePassword } from "../Actions/Actions"
+import { Button } from "@/components/ui/button"
 
 
 
@@ -35,18 +36,18 @@ function ProfileForm(){
         }
     });
         return(
-            <Form {...form}>
+            <Form {...form} >
             <form className="space-y-6 lg:space-y-8">
               <FormField
                 control={form.control}
                 name="password"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Password</FormLabel>
+                    <FormLabel>Enter your new Password</FormLabel>
                     <FormControl>
                       <Input
-                        className="p-4"
-                        placeholder="Enter your new Password"
+                        className="p-4 space-y-8"
+                        placeholder="password"
                         type="password"
                         {...field}
                       />
@@ -57,11 +58,11 @@ function ProfileForm(){
               />
               
       
-      <div className="flex flex-col  max-w-screen-sm space-y-2">
-
-                <button className="p-2 rounded-md text-white bg-green-500 w-full " formAction={changePassword}>Chage password</button>
+      <div className="flex flex-col  max-w-screen-sm ">
+{/* 
+                <button className="p-2 rounded-md text-white bg-green-500 w-full " formAction={changePassword}>Chage password</button> */}
                 
-
+              <Button className=" w-full" variant={'default'} formAction={changePassword}> Change Password</Button>
               </div>
             </form>
           </Form>
@@ -72,10 +73,10 @@ function ProfileForm(){
 
 function page() {
   return (
-    <section className="max-w-screen-md h-screen flex flex-col lg:flex-row p-4 space-y-6 mx-auto justify-center items-center">
-    
-    <div className="w-full md:w-1/2 space-y-4 justify-center items-center">
-      <h1 className="text-xl font-semibold text-center">Forgot password </h1>
+    <section className="max-w-screen-md h-screen flex flex-col  p-4 space-y-6 mx-auto justify-center items-center ">
+    <h1 className="text-2xl font-bold text-blue-600 text-start">Aspire ®</h1>
+    <div className="w-full md:w-1/2 space-y-4 ">
+      <h1 className="text-xl font-semibold text-center">Change Password</h1>
       <ProfileForm />
     
     </div>
