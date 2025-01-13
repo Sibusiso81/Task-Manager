@@ -1,11 +1,11 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import { redirect } from "next/navigation";
+
 /* 
 Save messgage history by passing in an array to be steoed in history
 */
 
 export default function getApiKey( goal: string) {
-  const NEXT_GEMINI_API_KEY = 'AIzaSyDh_G87A0wBdCB6UWNympU1bOeYcnVFaT8';
+  const NEXT_GEMINI_API_KEY =process.env.NEXT_GEMINI_API_KEY ;
   if (!NEXT_GEMINI_API_KEY) {
     throw new Error("NEXT_GEMINI_API_KEY is not defined");
   }
