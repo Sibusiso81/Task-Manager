@@ -1,17 +1,16 @@
-import React from 'react'
+import React from "react";
 import Image from "next/image";
 import { AnimatePresence } from "framer-motion";
-import Link from 'next/link';
-import { Button } from './ui/button';
-import { Menu,  X } from 'lucide-react';
-import Navbar from './ui/Navbar';
+import Link from "next/link";
+import { Button } from "./ui/button";
+import { Menu, X } from "lucide-react";
+import Navbar from "./ui/Navbar";
 import { useState } from "react";
 function Home() {
-    const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   return (
-   <section  className='flex flex-col overflow-x-hidden'>
-     <div id="Home">
-    
+    <section className="flex flex-col overflow-x-hidden">
+      <div id="Home">
         <div className="w-full p-6 border-[#eaeaea] flex  space-x-4 lg:justify-between  justify-between rounded-md relative z-40 flex-1 items-center ">
           <div className={`flex flex-row space-x-4 items-center`}>
             <h1 className="font-bold dark:text-[#eaeaea] text-lg text-black">
@@ -46,11 +45,10 @@ function Home() {
           <div className="flex flex-row space-x-2 items-center">
             <div className="hidden lg:flex flex-row space-x-2">
               <Link href={"/Auth/Login"}>
-          
                 <Button>Log In</Button>
               </Link>
             </div>
-            
+
             <Menu
               className={`cursor-pointer lg:hidden   ${isOpen ? "hidden" : ""}`}
               onClick={() => setIsOpen(!isOpen)}
@@ -79,55 +77,52 @@ function Home() {
           </p>
           <div className="flex flex-row space-x-3 w-full lg:w-1/2">
             <Link href={"Auth/Signup"}>
-              {/* <button className="rounded-md p-2 font-semibold bg-[#FFFFFFCC] border border-neutral-800/35  w-full h-full">
-                {" "}
+             
+              <Button
+                variant={"outline"}
+                className=" rounded-lg w-full h-full "
+              >
                 Get Started{" "}
-              </button> */}
-              <Button variant={'outline'} className=" rounded-lg w-full h-full ">
-              Get Started{" "}
               </Button>
             </Link>
             <Link href={"#Contact"}>
-              <Button variant={'default'}>Contact</Button>
+              <Button variant={"default"}>Contact</Button>
             </Link>
           </div>
         </div>
         <div className="grid grid-cols-2 gap-4 h-1/2 lg:w-1/2">
           <div className="col-span-2 md:col-span-1 lg:flex flex-col space-y-4 h-full">
             <Image
-              src="/roman-bozhko-PypjzKTUqLo-unsplash.jpg" // Path relative to 'public'
+              src="/roman-bozhko-PypjzKTUqLo-unsplash.jpg" 
               alt="Task Manager Inspiration"
-              width={800} // Specify width
-              height={600} // Specify height
-              priority // Optional: Preload the image
+              width={800} 
+              height={600} 
+              priority 
               className="rounded-lg lg:h-full"
             />{" "}
             <Image
-              src="/avi-richards-Z3ownETsdNQ-unsplash.jpg" // Path relative to 'public'
+              src="/avi-richards-Z3ownETsdNQ-unsplash.jpg" 
               alt="Task Manager Inspiration"
-              width={800} // Specify width
-              height={600} // Specify height
-              priority // Optional: Preload the image
+              width={800} 
+              height={600} 
+              priority 
               className="rounded-lg lg:h-full hidden "
             />
           </div>
           <div className="col-span-2 md:col-span-1 hidden">
             <Image
-              src="/marissa-grootes-flRm0z3MEoA-unsplash.jpg" // Path relative to 'public'
+              src="/marissa-grootes-flRm0z3MEoA-unsplash.jpg" 
               alt="Task Manager Inspiration"
-              width={800} // Specify width
-              height={800} // Specify height
-              priority // Optional: Preload the image
-              
+              width={800} 
+              height={800} 
+              priority 
               className="rounded-lg md:h-full hidden"
             />
-            
           </div>
         </div>
       </section>
-    
-   </section>
-  )
+    </section>
+  );
 }
 
-export default Home
+export default Home;

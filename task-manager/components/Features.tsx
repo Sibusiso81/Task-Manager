@@ -49,7 +49,7 @@ function Features() {
              ].map((feature, index) => (
                <div
                  key={index}
-                 className=" border-l-2 border-l-neutral-600/30 col-span-4 md:col-span-2 lg:col-span-1 space-y-2 pl-3"
+                 className="  col-span-4 md:col-span-2 lg:col-span-1 space-y-2 pl-3"
                >
                  <h1 className="text-blue-600">{feature.icon}</h1>
                  <h2 className="text-lg font-medium">{feature.heading}</h2>

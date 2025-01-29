@@ -1,21 +1,5 @@
-/* 
-check if user = to the session they are in 
---Only alow the right user
---make sure that functions with name as null only run wehn its a new day
-Create an array state to store messages from the goal and suggestins made by the llm
-
-Redirect user once json from gemini is inserted to the db
-check if gemmini output is the besrt
-
--ensure that new tasks are fetched evry day ony 
-check  call of get new task function
--Ensure no new tasks are added unncecesarily
-
-
-*/
-
 "use client";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -39,23 +23,6 @@ import { redirect } from "next/navigation";
 import { ArrowRight, ExternalLink } from "lucide-react";
 import Link from "next/link";
 
-// Validation schemas for each step
-const nameSchema = z.object({
-  name: z
-    .string()
-    .min(2, { message: "Name must be at least 2 characters long." }),
-});
-
-/* const apiKeySchema = z.object({
-  apiKey: z.string().min(10, { message: "API Key must be at least 10 characters long." }),
-});
- */
-const goalsSchema = z.object({
-  goals: z
-    .string()
-    .min(5, { message: "Goals must be at least 5 characters long." }),
-});
-
 function GetStartedPage() {
   const [step, setStep] = useState(1);
   const [isComplete, setIsComplete] = useState(false);
@@ -71,44 +38,8 @@ function GetStartedPage() {
     visible: { opacity: 1, y: 0 },
     exit: { opacity: 0, y: -20 },
   };
-  const fetchGeminiTasks = useCallback(async () => {
-    const [name, goals] = formInfo;
-
-    if (goals) {
-      console.log(`combined goals${typeof goals}`);
-      console.log(`goals ${goals} ,name: ${name}`);
-    }
-    if (goals) {
-      try {
-        console.log("getting tasks");
-        toast.success("Generating Tasks");
-        const tasks = await getApiKey(goals,apiKey);
-        if(!tasks){
-          console.log('Error fetching tasks ')
-          return
-        }
-        const dataArray = JSON.parse(tasks);
-        console.log(dataArray);
-        if (Array.isArray(dataArray)) {
-          setGeminiTasks(dataArray);
-          await getUser(dataArray, name);
-          setIsComplete(true);
-          redirect("/Task");
-        } else {
-          console.error("Invalid data type:", typeof dataArray);
-        }
-        redirect("/Tasks");
-      } catch (error) {
-        console.error("Error fetching Gemini Tasks:", error);
-      }
-    }
-  }, [geminiTasks, formInfo]);
-
-  const getUser = async (
-    tasks: string[],
-    name: string,
-    
-  ) => {
+  
+  const getUser = useCallback(async (tasks: string[], name: string) => {
     const supabase = createClient();
     const {
       data: { session },
@@ -121,86 +52,63 @@ function GetStartedPage() {
     const user = session.user;
     if (!user) {
       console.error("Error: user is not authenticated");
-      redirect("/Auth/Sighup");
+      redirect("/Auth/Signup");
     }
 
-  if(!tasks){
-    console.log('tasks not avaliable on db:',tasks)
-
-  }
+    if (!tasks) {
+      console.log("tasks not avaliable on db:", tasks);
+    }
     if (tasks && tasks.length > 0) {
-      const {data,error} = await supabase
+      const { data, error } = await supabase
         .from("tasks")
-        .insert([{ user_id: user.id,tasks,api_key:apiKey }])
-        if(error)[
-          console.log('Error inserting info to db:',error)
-
-        ]
-        if(data){
-          console.log('Insert complete')
-          setIsComplete(true);
-        }
-      
+        .insert([{ user_id: user.id, name, tasks, api_key: apiKey }]);
+      if (error) {
+        console.log("Error inserting info to db:", error);
+      }
+      if (data) {
+        console.log("Insert complete");
+        setIsComplete(true);
+      }
     } else {
       console.error("No tasks to insert");
     }
-  };
+  }, [apiKey]);
 
-  const [currentDay, setCurrentDay] = useState<number>(new Date().getDate());
-  const [prevDay, setPrevDay] = useState<number>(new Date().getDate());
+  const fetchGeminiTasks = useCallback(async () => {
+    const [name, goals] = formInfo;
 
-  useEffect(() => {
-    const date = new Date();
-    const today = date.getDate();
-
-    if (prevDay !== today) {
-      setPrevDay(today);
-      async function getNewTasks() {
-        try {
-          const tasks = await getApiKey("its a new day",apiKey);
-          if(!tasks){
-            console.log('Error fetching  data from gemini',tasks)
-            return
-          }
-          const dataArray = JSON.parse(tasks);
-          if (Array.isArray(dataArray)) {
-            setGeminiTasks(dataArray);
-            await getUser(dataArray, formInfo[0]);
-          } else {
-            console.error("Invalid data type:", typeof tasks);
-          }
-        } catch (error) {
-          console.error("Error fetching new tasks:", error);
-        }
-      }
-      getNewTasks();
+    if (goals) {
+      console.log(`combined goals${typeof goals}`);
+      console.log(`goals ${goals} ,name: ${name}`);
     }
-  }, [prevDay, formInfo]);
-
-  /*  useEffect(() => {
-    const interval = setInterval(() => {
-      const day = new Date().getDate();
-      if (prevDayRef.current !== day) {
-        prevDayRef.current = day;
-        async function getNewTasks() {
-          try {
-            const tasks = await getApiKey("its a new day");
-            const dataArray = JSON.parse(tasks);
-            if (Array.isArray(dataArray)) {
-              setGeminiTasks(dataArray);
-              await getUser(dataArray, formInfo[0], true);
-            } else {
-              console.error("Invalid data type:", typeof tasks);
-            }
-          } catch (error) {
-            console.error("Error fetching new tasks:", error);
-          }
+    if (goals) {
+      try {
+        console.log("getting tasks");
+        toast.success("Generating Tasks");
+        const tasks = await getApiKey(goals, apiKey);
+        if (!tasks) {
+          console.log("Error fetching tasks ");
+          return;
         }
-        getNewTasks();
+        const dataArray = JSON.parse(tasks);
+        console.log(dataArray);
+        if (Array.isArray(dataArray)) {
+          setGeminiTasks(dataArray);
+          await getUser(geminiTasks, name);
+          setIsComplete(true);
+          redirect("/Task");
+        } else {
+          console.error("Invalid data type:", typeof dataArray);
+        }
+        redirect("/Tasks");
+      } catch (error) {
+        console.error("Error fetching Gemini Tasks:", error);
       }
-    }, 60000 * 60 * 24);
-    return () => clearInterval(interval);
-  }, []); */
+    }
+  }, [formInfo, apiKey, getUser]);
+  
+
+  
   const nameSchema = z.object({
     name: z.string().min(2, { message: "Name must be at least 2 characters." }),
   });
@@ -277,7 +185,7 @@ function GetStartedPage() {
                     </FormItem>
                   )}
                 />
-                <Button type="submit" className="w-full" variant={'default'}>
+                <Button type="submit" className="w-full" variant={"default"}>
                   Next
                 </Button>
               </form>
@@ -336,7 +244,7 @@ function GetStartedPage() {
                 onSubmit={apiKeyForm.handleSubmit((data) => {
                   console.log("API Key Submitted:", data.apiKey);
                   setFormInfo((prev) => [...prev, data.apiKey]);
-                  
+                  setApiKey(data.apiKey)
                   fetchGeminiTasks();
                 })}
               >

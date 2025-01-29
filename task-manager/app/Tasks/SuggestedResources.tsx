@@ -4,30 +4,20 @@ import { ExternalLink } from 'lucide-react'
 
 interface Resource {
   title: string
-  link: string
+  type: string
+  url: string
 }
 
 interface SuggestedResourcesProps {
-  suggestedResources: string[]
+  suggestedResources: Resource[]
 }
-
-const parseResource = (resource: string): Resource => {
-  const [title, link] = resource.split(': ')
-  return {
-    title: title.trim(),
-    link: link.replace(/[\[\]]/g, '').trim()
-  }
-}
-
 
 export function SuggestedResources({ suggestedResources }: SuggestedResourcesProps) {
-  const parsedResources = suggestedResources.map(parseResource)
-
   return (
-    <div className="w-full  mx-auto ">
+    <div className="w-full mx-auto">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {parsedResources.length > 0 ? (
-          parsedResources.map((resource, index) => (
+        {suggestedResources.length > 0 ? (
+          suggestedResources.map((resource, index) => (
             <motion.div
               key={index}
               whileHover={{ scale: 1.03 }}
@@ -40,7 +30,7 @@ export function SuggestedResources({ suggestedResources }: SuggestedResourcesPro
                     {resource.title}
                   </h3>
                   <a
-                    href={resource.link}
+                    href={resource.url}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-blue-500 hover:text-blue-600 transition-colors duration-200"
@@ -62,4 +52,3 @@ export function SuggestedResources({ suggestedResources }: SuggestedResourcesPro
     </div>
   )
 }
-

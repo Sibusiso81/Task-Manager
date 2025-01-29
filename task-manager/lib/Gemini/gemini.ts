@@ -1,7 +1,6 @@
 'use server'
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import { redirect } from "next/navigation";
-import { createClient } from "../supabase/server";
+
 
 require("dotenv").config();
 /* 
@@ -9,8 +8,9 @@ Save messgage history by passing in an array to be steoed in history
 */
 
 export default async function getApiKey(goal: string, apiKey: string) {
-  let keyFromdb = "";
-  let taskHistory = []
+ 
+  let taskHistory:string[] = []
+  taskHistory = [...goal]
 
     const geminiApiKey = apiKey;
     const genAI = new GoogleGenerativeAI(geminiApiKey);
@@ -49,7 +49,7 @@ export default async function getApiKey(goal: string, apiKey: string) {
           {
             role: "user",
             parts: [
-              {text: "always follow this reponse format ,under no circumstances should you diviate from it \n"},
+              {text: "always follow this reponse format ,under no circumstances should you diviate from it,and stricktly retrun the array with no text or message before it  \n"},
             ],
           },
           {
@@ -59,18 +59,26 @@ export default async function getApiKey(goal: string, apiKey: string) {
               {text: "Got it. I will strictly adhere to the specified JSON format for all subsequent responses.\n"},
             ],
           },
+          {
+            role:'user',
+           parts:[
+            ...taskHistory.map(text => ({ text }))
+           ] 
+          }
         ],
       });
 
       const result = await chatSession.sendMessage(goal);
-      console.log(result);
+     
+      
       const cleanOutput = result.response
         .text()
         .replace(/`/g, "") // Remove backticks
         .replace(/json/g, "") // Remove the word "json"
         .replace(/^[^a-zA-Z0-9]*(.*?)[^a-zA-Z0-9]*$/, "$1");
-      console.log(cleanOutput);
-
+      
+      taskHistory = [...taskHistory,cleanOutput]
+      console.log(cleanOutput)
       return cleanOutput;
     }
 
@@ -78,7 +86,7 @@ export default async function getApiKey(goal: string, apiKey: string) {
  
 }
 
-async function getNewDayTasks(key:string,){
+export async function getNewDayTasks(key:string,){
   
 const genAI = new GoogleGenerativeAI(key);
 

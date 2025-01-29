@@ -1,6 +1,7 @@
 import React from 'react'
 import { motion } from 'framer-motion'
 import {  Coffee, ExternalLink, Github, Heart, Instagram, Linkedin, Mail, Twitter } from 'lucide-react'
+import Link from 'next/link'
 function Contact() {
     
   return (
@@ -44,7 +45,8 @@ function Contact() {
             Navigation
           </h3>
           <ul className="space-y-3">
-            {["About", "How to Start", "Contact", "Support"].map((item) => (
+            {["About", "Features", "steps", "Home"].map((item,idx) => (
+             <Link href={`#${item}`} key={idx}>
               <motion.li
                 key={item}
                 whileHover={{
@@ -55,6 +57,7 @@ function Contact() {
                 <ExternalLink size={14} />
                 {item}
               </motion.li>
+             </Link>
             ))}
           </ul>
         </div>
