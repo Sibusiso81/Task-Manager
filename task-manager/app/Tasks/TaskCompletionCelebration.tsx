@@ -22,7 +22,7 @@ import {
   RadialBarChart,
 } from "recharts";
 import InferredBehaviors from "./inferredBehaviours";
-import { ChartConfig, ChartContainer } from "@/components/ui/chart";
+import { ChartContainer } from "@/components/ui/chart";
 import { Confetti, type ConfettiRef, } from "@/components/ui/confetti"
 import getApiKey from "@/lib/Gemini/gemini"
 import { createClient } from "@/lib/supabase/client"
@@ -203,15 +203,14 @@ const [newDay,setNewDay]= useState<boolean>(false)
     },
   ];
 
-  const handleNewDay = async(apiKey:string) => {
+  const handleNewDay = async(apiKey: string) => {
     setShowConfetti(true);
     setTimeout(() => setShowConfetti(false), 3000);
-    // Add your logic for starting a new day here
+    
     const newDayText = `its a new day , obsticles i faces previously ${obsticles} and to impove my experiance and progress the following support would be helpfull ${support} ,take these into consideration before suggesting new days tasks`;
     console.log(newDayText);
   
     const geminiResponse = await getApiKey(newDayText, apiKey);
-
     const newTasks = JSON.parse(geminiResponse);
     const supabase = createClient();
 
@@ -238,18 +237,19 @@ const [newDay,setNewDay]= useState<boolean>(false)
         }
 
         if (error) {
-          console.log("Failed to inset new tasks:", error);
-        }
-        if (!error) {
+          console.log("Failed to insert new tasks:", error);
+        } else {
           window.location.reload();
         }
         if (obsticles && support) {
           console.log(newDayText);
         }
-        newDay ? window.location.reload() : null;
-  };
-}
-  }
+        if (newDay) {
+          window.location.reload();
+        }
+      }
+    }
+};
 
   /* 
     const handleNewDay = async () => {
@@ -344,7 +344,7 @@ const [newDay,setNewDay]= useState<boolean>(false)
         </div>
       </div>
       <div className="flex justify-center space-x-4">
-        <Button onClick={()=>handleNewDay} className=" overflow-hidden">
+        <Button onClick={()=>handleNewDay(apikey)} className=" overflow-hidden">
           <span className="relative z-10">Start New Day</span>
           {showConfetti && (
             <motion.div

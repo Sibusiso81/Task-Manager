@@ -92,10 +92,10 @@ function Tasks() {
       let  totalMinutes = 0;
       actionableSteps.forEach((item) => {
         // Extract '1 hour', '30 mins' etc
-        let timeString = item.time_estimate;
+        const  timeString = item.time_estimate;
         // Split into number and unit
-        let [value, unit] = timeString.split(" ");
-        let newNumber = parseInt(value);
+        const [value, unit] = timeString.split(" ");
+        const newNumber = parseInt(value);
 
         if (unit.includes("hour")) {
           totalMinutes += newNumber * 60;
@@ -114,7 +114,7 @@ function Tasks() {
       const updatedSteps = prevActionableSteps.filter(
         (_, index) => index !== stepToRemove
       );
-      setCompletedTasks(completedTasks + 1);
+      setCompletedTasks((prev)=> prev + 1);
       return updatedSteps;
     });
     complitionTimes.push(actualTime);
@@ -211,10 +211,10 @@ function Tasks() {
       let totalMinutes = 0;
       actionableSteps.forEach((item: ActionableStep) => {
         // Extract '1 hour', '30 mins' etc
-        let timeString = item.time_estimate;
+        const timeString = item.time_estimate;
         // Split into number and unit
-        let [value, unit] = timeString.split(" ");
-        let newNumber = parseInt(value);
+        const  [value, unit] = timeString.split(" ");
+        const  newNumber = parseInt(value);
 
         if (unit.includes("hour")) {
           totalMinutes += newNumber * 60;
@@ -231,7 +231,7 @@ function Tasks() {
     };
 
     getUser();
-  }, []);
+  }, );
 
   const circumference = 2 * Math.PI * 36;
 
@@ -273,7 +273,7 @@ function Tasks() {
               <div className="flex items-start justify-between w-full max-w-7xl mx-auto">
                 <div className="border-l-4 border-blue-500 pl-4">
                   <h2 className="text-sm font-medium text-gray-500">
-                    Today's Focus
+                    Today&apos;s Focus
                   </h2>
                   <p className="text-sm md:text-2xl lg:text-4xl font-bold mt-2 text-gray-800">
                     {dailyFocus}
@@ -464,6 +464,7 @@ function Tasks() {
                                 How long did it take you to complete the task ?
                               </label>
                               <Input
+                              required
                                 type="number"
                                 placeholder="Actual time to complete task (mins)"
                                 onChange={(e) =>

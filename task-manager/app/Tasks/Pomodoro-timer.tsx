@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Play, Pause, RotateCcw } from 'lucide-react'
@@ -12,27 +12,7 @@ export function PomodoroTimer() {
   const [isActive, setIsActive] = useState(false)
   const [mode, setMode] = useState<TimerMode>('work')
 
-  useEffect(() => {
-    let interval: NodeJS.Timeout | null = null
-
-    if (isActive) {
-      interval = setInterval(() => {
-        setTimeLeft((prevTimeLeft) => {
-          if (prevTimeLeft <= 0) {
-            handleModeChange()
-            return prevTimeLeft
-          }
-          return prevTimeLeft - 1
-        })
-      }, 1000)
-    }
-
-    return () => {
-      if (interval) clearInterval(interval)
-    }
-  }, [isActive])
-
-  const handleModeChange = () => {
+  const handleModeChange = useCallback(() => {
     switch (mode) {
       case 'work':
         setMode('shortBreak')
@@ -52,7 +32,27 @@ export function PomodoroTimer() {
         break
     }
     setIsActive(false)
-  }
+  }, [mode]) // Add mode as a dependency
+
+  useEffect(() => {
+    let interval: NodeJS.Timeout | null = null
+
+    if (isActive) {
+      interval = setInterval(() => {
+        setTimeLeft((prevTimeLeft) => {
+          if (prevTimeLeft <= 0) {
+            handleModeChange()
+            return prevTimeLeft
+          }
+          return prevTimeLeft - 1
+        })
+      }, 1000)
+    }
+
+    return () => {
+      if (interval) clearInterval(interval)
+    }
+  }, [isActive, handleModeChange]) // handleModeChange is now stable
 
   const resetTimer = () => {
     setIsActive(false)
@@ -75,7 +75,7 @@ export function PomodoroTimer() {
         <div className="text-6xl font-bold text-center mb-4">
           {formatTime(timeLeft)}
         </div>
-        <div className="w-full flex flex-col space-y-2  mb-4">
+        <div className="w-full flex flex-col space-y-2 mb-4">
           <Button 
             variant={mode === 'work' ? 'default' : 'outline'}
             onClick={() => { setMode('work'); setTimeLeft(25 * 60); setIsActive(false); }}

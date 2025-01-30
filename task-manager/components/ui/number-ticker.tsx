@@ -15,7 +15,7 @@ export default function NumberTicker({
   value: number;
   direction?: "up" | "down";
   className?: string;
-  delay?: number; // delay in s
+  delay?: number; // delay in seconds
   decimalPlaces?: number;
 }) {
   const ref = useRef<HTMLSpanElement>(null);
@@ -27,24 +27,29 @@ export default function NumberTicker({
   const isInView = useInView(ref, { once: true, margin: "0px" });
 
   useEffect(() => {
-    isInView &&
-      setTimeout(() => {
+    if (isInView) {
+      const timer = setTimeout(() => {
         motionValue.set(direction === "down" ? 0 : value);
       }, delay * 1000);
+
+      // Cleanup the timeout on unmount or when dependencies change
+      return () => clearTimeout(timer);
+    }
   }, [motionValue, isInView, delay, value, direction]);
 
-  useEffect(
-    () =>
-      springValue.on("change", (latest) => {
-        if (ref.current) {
-          ref.current.textContent = Intl.NumberFormat("en-US", {
-            minimumFractionDigits: decimalPlaces,
-            maximumFractionDigits: decimalPlaces,
-          }).format(Number(latest.toFixed(decimalPlaces)));
-        }
-      }),
-    [springValue, decimalPlaces],
-  );
+  useEffect(() => {
+    const unsubscribe = springValue.on("change", (latest) => {
+      if (ref.current) {
+        ref.current.textContent = Intl.NumberFormat("en-US", {
+          minimumFractionDigits: decimalPlaces,
+          maximumFractionDigits: decimalPlaces,
+        }).format(Number(latest.toFixed(decimalPlaces)));
+      }
+    });
+
+    // Cleanup the subscription on unmount
+    return () => unsubscribe();
+  }, [springValue, decimalPlaces]);
 
   return (
     <span

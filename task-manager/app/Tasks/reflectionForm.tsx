@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -27,9 +27,7 @@ import { z } from "zod";
 
 import { createClient } from "@/lib/supabase/client";
 import { redirect } from "next/navigation";
-import getApiKey from "@/lib/Gemini/gemini";
 import { TaskCompletionCelebration } from "./TaskCompletionCelebration";
-import {  type ConfettiRef } from "@/components/ui/confetti";
 
 function ReflectionForm({
   completionTimePercentage,
@@ -37,10 +35,10 @@ function ReflectionForm({
   completionTimePercentage: number;
 }) {
   const [satisfaction, setSatisfaction] = useState(5);
-  const [newDay, setNewDay] = useState(false);
+ 
   const [tasksCompleted, setTasksCompleted] = useState(0);
   const [totalTasks, setTotalTasks] = useState(0);
-  const [adherance, setAdherence] = useState<string>("");
+  const [,setAdherence] = useState<string>("");
   const [reflectionSent, setReflectionSent] = useState<boolean>(false);
   const [support, setSupport] = useState<string | null>();
   const [apiKey, setApiKey] = useState("");
@@ -109,50 +107,7 @@ function ReflectionForm({
     getUser();
   }, []);
 
-  //Get  / aSet new day tasks
-  const handleNewDay = async () => {
-    console.log("handling new day");
-    const newDayText = `its a new day , obsticles i faces previously ${obsticles} and to impove my experiance and progress the following support would be helpfull ${support} ,take these into consideration before suggesting new days tasks`;
-    console.log(newDayText);
-    const geminiResponse = await getApiKey(newDayText, apiKey);
-
-    const newTasks = JSON.parse(geminiResponse);
-    const supabase = createClient();
-    const {
-      data: { session },
-      error: sessionError,
-    } = await supabase.auth.getSession();
-
-    if (sessionError || !session) {
-      console.log("Error fetching session", sessionError);
-      redirect("/Auth/Error");
-    } else {
-      const user = session.user;
-      if (!user) {
-        console.error("Error: user is not authenticated");
-        redirect("/Auth/Signup");
-      } else {
-        const { data, error } = await supabase
-          .from("tasks")
-          .insert([{ tasks: newTasks, user_id: user.id }]);
-        if (data) {
-          console.log("Insert Successful");
-          setNewDay(true);
-        }
-
-        if (error) {
-          console.log("Failed to inset new tasks:", error);
-        }
-        if (!error) {
-          window.location.reload();
-        }
-        if (obsticles && support) {
-          console.log(newDayText);
-        }
-        newDay ? window.location.reload() : null;
-      }
-    }
-  };
+  
   /* Return data that can be accesed later by the analytics component */
   const onSubmit = (data: FormData) => {
     setReflectionSent(true);
@@ -179,9 +134,8 @@ function ReflectionForm({
         Number(satisfactionValue !== null ? satisfactionValue : 0)
       );
       setTasksCompleted(Number(completedTasks !== null ? completedTasks : 0));
-      setTasksCompleted(
-        Number(totalNumberOfTasks !== null ? totalNumberOfTasks : 0)
-      );
+setTotalTasks(Number(totalNumberOfTasks !== null ? totalNumberOfTasks : 0));
+
       setSupport(support !== null ? support.toString() : "no tasks");
       setAdherence(adherance !== null ? adherance.toString() : "no adheraance");
       setTotalTasks(
@@ -192,7 +146,7 @@ function ReflectionForm({
       `Form Data  : Stisfaction ${satisfaction} ,TasksCompleted: : ${tasksCompleted}`
     );
     console.log("Form submitted", data);
-    console.log(completionTimePercentage);
+    console.log(completionTimePercentage,adherance);
 
     ///Get new tasks
     //Complile a string that states it's a new day adds obsticles and support the user specified
@@ -255,7 +209,7 @@ Adabtability
 
   const watchTasksCompleted = watch("tasksCompleted");
   const watchTotalTasks = watch("totalTasks");
-  const confettiRef = useRef<ConfettiRef>(null);
+
 
   return (
     <div className="h-fit max-w-screen-md w-full  mx-auto  place-self-start">
@@ -313,18 +267,18 @@ Adabtability
                     support !== undefined ? support.toString() : "no tasks"
                   );
                   setAdherence(
-                    adherance !== null ? adherance.toString() : "no adheraance"
+                    adherance !== null ? adherance.toString() : adherance
                   );
                 }
                 console.log(
-                  `Form Data  : Stisfaction ${satisfaction} ,TasksCompleted: : ${tasksCompleted}`
+                  `Form Data  : Stisfaction ${satisfaction} ,TasksCompleted: : ${tasksCompleted} adherance:${adherance}`
                 );
                 setReflectionSent(true);
                 console.log(reflectionSent);
 
                 console.log("Form submitted", data);
               })}
-              className="space-y-6 p-6"
+              className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6"
             >
               <div className="col-span-2 w-full grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-4 col-span-1 md:col-span-2">

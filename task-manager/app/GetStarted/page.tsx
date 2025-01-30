@@ -64,6 +64,8 @@ function GetStartedPage() {
         .insert([{ user_id: user.id, name, tasks, api_key: apiKey }]);
       if (error) {
         console.log("Error inserting info to db:", error);
+        toast.error("Oops ,Please try again.");
+
       }
       if (data) {
         console.log("Insert complete");
@@ -71,8 +73,9 @@ function GetStartedPage() {
       }
     } else {
       console.error("No tasks to insert");
+      toast.error('Somthing went wrong!')
     }
-  }, [apiKey]);
+  }, [apiKey,geminiTasks]);
 
   const fetchGeminiTasks = useCallback(async () => {
     const [name, goals] = formInfo;
@@ -94,7 +97,7 @@ function GetStartedPage() {
         console.log(dataArray);
         if (Array.isArray(dataArray)) {
           setGeminiTasks(dataArray);
-          await getUser(geminiTasks, name);
+          await getUser(dataArray, name);
           setIsComplete(true);
           redirect("/Task");
         } else {
@@ -105,7 +108,7 @@ function GetStartedPage() {
         console.error("Error fetching Gemini Tasks:", error);
       }
     }
-  }, [formInfo, apiKey, getUser]);
+  }, [formInfo, apiKey, getUser,geminiTasks]);
   
 
   
