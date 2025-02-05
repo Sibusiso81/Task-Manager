@@ -56,7 +56,7 @@ console.log(tasks)
     }
 console.log(processedTasks)
     getUser()
-  }, [])
+  })
 
   return (
     <div className="min-h-screen bg-white text-gray-900 w-screen p-10 space-y-4">

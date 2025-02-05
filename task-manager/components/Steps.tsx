@@ -1,18 +1,13 @@
-import React from 'react'
+import React from "react";
 
 function Steps() {
   return (
-    <section 
-    id="Steps"
-    className="flex flex-col justify-center w-screen h-fit md:h-screen p-6 md:p-10 lg:p-20 space-y-10 ">
-    <h1 className="text-2xl font-bold place-self-start">How it works </h1>
+    <section
+      id="Steps"
+      className="flex flex-col justify-center w-screen h-fit md:h-screen p-6 md:p-10 lg:p-20 space-y-10 "
+    >
+      <h1 className="text-2xl font-bold place-self-start">How it works </h1>
       <div className="grid grid-cols-3 gap-4 gap-y-6">
-        {/*   <div className="col-span-4 md: flex flex-col space-y-2">
-          <h1 className="text-neutral-600">01</h1>
-          <h2 className="text-lg font-medium">Create an Aspire account</h2>
-          <p>Click on teh get started button to sign up and ,your done.</p>
-        </div> */}
-
         {[
           {
             stepNumber: "01",
@@ -49,7 +44,7 @@ function Steps() {
         ))}
       </div>
     </section>
-  )
+  );
 }
 
-export default Steps
+export default Steps;

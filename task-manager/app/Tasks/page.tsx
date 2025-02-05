@@ -31,7 +31,7 @@ import ReflectionForm from "./reflectionForm";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
 
-interface ActionableStep {
+export interface ActionableStep {
   step: string;
   guidance: string[];
   time_estimate: string;
@@ -39,23 +39,23 @@ interface ActionableStep {
   strategies: string;
 }
 
-type ScheduleItem = {
+export type ScheduleItem = {
   time: string;
   activity: string;
   icon: string;
 };
 
-type SchduledSuggestion = {
+export type SchduledSuggestion = {
   [key: string]: ScheduleItem[];
 };
 
-type Resource = {
+export type Resource = {
   title: string;
   type: string;
   url: string;
   description?: string;
 };
-type ResourceSuggestion = {
+export type ResourceSuggestion = {
   [key: string]: Resource[];
 };
 
@@ -105,7 +105,7 @@ function Tasks() {
       });
       console.log(totalMinutes);
       setInitialTaskCompletionTime(totalMinutes);
-    }, [scheduleSuggestion]);
+    }, [actionableSteps]);
 
 
   const handleComplete = (stepToRemove: number) => {
@@ -125,7 +125,6 @@ function Tasks() {
       complitionTime += item;
     });
 
-    console.log(complitionTimes);
     let result;
     result = complitionTime > estimatedComplitionTime
       ? 0
@@ -179,7 +178,6 @@ function Tasks() {
       }
 
       const data = JSON.parse(tasks[tasks.length - 1].tasks[0]);
-      console.log(data);
       const schedule = JSON.parse(tasks[tasks.length - 1].tasks[1]);
 
       setDailyFocus(data["Today's Focus"]);
@@ -188,13 +186,10 @@ function Tasks() {
       const {
         "Suggested Resources": suggestedResources,
         "Actionable Steps": actionableSteps,
-        "Reflective Question": reflectiveQuestion,
       } = data;
       const { "Daily Schedule": dailySchedule } = schedule;
-      console.log(suggestedResources, actionableSteps, reflectiveQuestion);
       if (suggestedResources) {
         setSuggestedResources({ "Suggested Resources": suggestedResources });
-        console.log(suggestedResources);
       }
 
       if (dailySchedule) {
@@ -222,16 +217,12 @@ function Tasks() {
           totalMinutes += newNumber;
         }
       });
-      console.log(totalMinutes);
       setInitialTaskCompletionTime(totalMinutes);
-      console.log(actionableSteps);
-      console.log(suggestedResources);
-      console.log(reflectiveQuestion);
-      console.log(scheduleSuggestion);
+      
     };
 
     getUser();
-  }, );
+  },[] );
 
   const circumference = 2 * Math.PI * 36;
 
@@ -334,7 +325,7 @@ function Tasks() {
               </div>
             </div>
           </section>
-          <section className=" max-w-7xl mx-auto   mt-8">
+          <section className=" max-w-7xl  p-2 md:p-8    mt-8">
             <h2 className="text-xl font-semibold text-black mb-6 after:content-[''] after:block after:w-20 after:h-1 after:bg-blue-500 after:mt-2">
               Daily Schedule
             </h2>
