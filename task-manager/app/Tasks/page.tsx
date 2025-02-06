@@ -14,22 +14,25 @@ import {
   SheetContent,
   SheetDescription,
   SheetFooter,
+  
   SheetHeader,
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import Link from "next/link";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuSeparator,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+  } from "@/components/ui/dropdown-menu";
 import { redirect } from "next/navigation";
 import { Toaster } from "sonner";
 import { PomodoroTimer } from "./Pomodoro-timer";
 import ReflectionForm from "./reflectionForm";
 import { Input } from "@/components/ui/input";
-import Link from "next/link";
+
 
 export interface ActionableStep {
   step: string;
@@ -72,6 +75,8 @@ function Tasks() {
   const [actualTime, setActualTime] = useState<number>(0);
   const [completionTimePercentage, setCompletionTimePercentage] =
     useState<number>(0);
+            const [name,setName] = useState<string>('')
+    
   const tasksNumber = actionableSteps.length;
   const completionPercentage = tasksNumber
     ? (completedTasks / (tasksNumber + completedTasks)) * 100
@@ -176,6 +181,7 @@ function Tasks() {
         redirect("/GetStarted");
         return;
       }
+      setName(tasks[0].name)
 
       const data = JSON.parse(tasks[tasks.length - 1].tasks[0]);
       const schedule = JSON.parse(tasks[tasks.length - 1].tasks[1]);
@@ -237,30 +243,47 @@ function Tasks() {
           <Toaster position="top-right" />
           <section className="w-full mx-auto md:px-4 sm:px-6 lg:px-8">
             <div className="bg-white space-y-6 ">
-              <nav className="flex items-center justify-between border-b border-gray-200 pb-4 w-full max-w-7xl mx-auto">
-                <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600">
-                  Aspire ®
-                </h1>
-                <DropdownMenu>
-                  <DropdownMenuTrigger className="bg-gray-100 p-2 rounded-full">
-                    <User />
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent>
-                    <Link href={"/Tasks/TaskHistory"}>
-                      {" "}
-                      <DropdownMenuItem>Task history</DropdownMenuItem>
-                    </Link>
-                    <DropdownMenuItem>
-                      <button
-                        onClick={logout}
-                        className="px-6 py-2 text-gray-600 hover:text-blue-600 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 rounded-lg"
-                      >
-                        Log out
-                      </button>
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </nav>
+            
+            <nav className="flex items-center justify-between border-b border-gray-200 pb-4 w-full max-w-7xl   mx-auto">
+    <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600">
+      Aspire ®
+    </h1>
+   
+<div className="place-self-end">
+   
+<DropdownMenu>
+      <DropdownMenuTrigger className="bg-gray-100 p-2 rounded-full">
+        
+<div className="flex w-full space-x-1"><User/> {name}</div>
+      </DropdownMenuTrigger>
+      <DropdownMenuSeparator/>
+      <DropdownMenuContent>
+      <Link href={"/Tasks/Tasks"}>
+          {" "}
+          <DropdownMenuItem>Tasks</DropdownMenuItem>
+        </Link>
+        <Link href={"/Tasks/TaskHistory"}>
+          {" "}
+          <DropdownMenuItem>Task history</DropdownMenuItem>
+        </Link>
+        <Link href={"/Tasks/TaskAssistant"}>
+          {" "}
+          <DropdownMenuItem>Task Assistant</DropdownMenuItem>
+        </Link>
+        <DropdownMenuItem>
+          <button
+            onClick={logout}
+            className="px-6 py-2 text-gray-600 hover:text-blue-600 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 rounded-lg"
+          >
+            Log out
+          </button>
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu> 
+  </div>   
+  </nav>
+
+
               <div className="flex items-start justify-between w-full max-w-7xl mx-auto">
                 <div className="border-l-4 border-blue-500 pl-4">
                   <h2 className="text-sm font-medium text-gray-500">

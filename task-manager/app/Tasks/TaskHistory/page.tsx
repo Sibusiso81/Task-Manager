@@ -1,7 +1,6 @@
 "use client"
 import { useEffect, useState } from "react"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { Button } from "@/components/ui/button"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger,DropdownMenuSeparator } from "@/components/ui/dropdown-menu"
 
 import logout from "@/app/Auth/Actions/Actions"
 import {  User,  } from "lucide-react"
@@ -14,7 +13,9 @@ import { processTasksHistory ,
 import { TaskCard } from "./taskCard"
 
 function Page() {
-  const [processedTasks, setProcessedTasks] = useState<ProcessedTask[]>([])
+  const [processedTasks, setProcessedTasks] = useState<ProcessedTask[]>([]);
+  const [name,setName]  = useState<string>()
+  
 
   useEffect(() => {
     const getUser = async () => {
@@ -46,9 +47,11 @@ function Page() {
 
       if (!tasks || tasks.length === 0 || !tasks[tasks.length - 1].tasks) {
         redirect("/GetStarted")
-        return
+        
       }
 console.log(tasks)
+setName(tasks[0].name)
+
       const processedTasksHistory = processTasksHistory(tasks)
 /*       console.log("Processed tasks history:", processedTasksHistory)
  */      setProcessedTasks(processedTasksHistory)
@@ -60,33 +63,44 @@ console.log(processedTasks)
 
   return (
     <div className="min-h-screen bg-white text-gray-900 w-screen p-10 space-y-4">
-    <nav className="flex items-center justify-between border-b border-gray-200 pb-4 w-full max-w-7xl mx-auto">
-      <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600">
-        Aspire ®
-      </h1>
-      <DropdownMenu>
-        <DropdownMenuTrigger className="bg-gray-100 p-2 rounded-full">
-          <User />
-        </DropdownMenuTrigger>
-        <DropdownMenuContent>
-          <DropdownMenuItem>
-            <div className="flex flex-col items-center justify-center">
-              <button
-                onClick={logout}
-                className="px-6 py-2 text-gray-600 hover: transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 rounded-lg"
-              >
-                Log out
-              </button>
-              <Link href={"/Tasks"} className="w-full px-6 py-2">
-                <Button className="px-6 py-2 " variant={"default"}>
-                  Back
-                </Button>
-              </Link>
-            </div>
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    </nav>
+    <nav className="flex items-center justify-between border-b border-gray-200 pb-4 w-full max-w-7xl   mx-auto">
+    <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600">
+      Aspire ®
+    </h1>
+   
+<div className="place-self-end">
+   
+<DropdownMenu>
+      <DropdownMenuTrigger className="bg-gray-100 p-2 rounded-full">
+        
+<div className="flex w-full space-x-1"><User/> {name}</div>
+      </DropdownMenuTrigger>
+      <DropdownMenuSeparator/>
+      <DropdownMenuContent>
+      <Link href={"/Tasks/Tasks"}>
+          {" "}
+          <DropdownMenuItem>Tasks</DropdownMenuItem>
+        </Link>
+        <Link href={"/Tasks/TaskHistory"}>
+          {" "}
+          <DropdownMenuItem>Task history</DropdownMenuItem>
+        </Link>
+        <Link href={"/Tasks/TaskAssistant"}>
+          {" "}
+          <DropdownMenuItem>Task Assistant</DropdownMenuItem>
+        </Link>
+        <DropdownMenuItem>
+          <button
+            onClick={logout}
+            className="px-6 py-2 text-gray-600 hover:text-blue-600 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 rounded-lg"
+          >
+            Log out
+          </button>
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu> 
+  </div>   
+  </nav>
 
     <main className="max-w-7xl mx-auto px-4 sm:px-2 lg:px-4 py-12">
       <div className="border-l-4 border-blue-500 pl-4">
