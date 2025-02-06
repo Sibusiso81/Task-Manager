@@ -11,9 +11,8 @@ import Home from "@/components/Home";
 
 export default function page() {
   return (
-    <main className="overflow-x-hidden space-y-10 ">
+    <main className="overflow-x-hidden ">
       <Home />
-
       <About />
       <Features />
       <Steps />
