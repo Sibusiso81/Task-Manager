@@ -132,7 +132,7 @@ function Page() {
         console.error("No tasks to insert")
         toast.error("Something went wrong!")
       }
-    },[apiKey,isComplete],
+    },[apiKey],
   )
 
   const fetchGeminiTasks = useCallback(async () => {

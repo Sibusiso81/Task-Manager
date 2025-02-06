@@ -170,7 +170,7 @@ function Page() {
       </DropdownMenuTrigger>
       <DropdownMenuSeparator/>
       <DropdownMenuContent>
-      <Link href={"/Tasks/Tasks"}>
+      <Link href={"/Tasks"}>
           {" "}
           <DropdownMenuItem>Tasks</DropdownMenuItem>
         </Link>

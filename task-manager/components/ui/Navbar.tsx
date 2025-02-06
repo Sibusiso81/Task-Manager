@@ -53,7 +53,7 @@ function Navbar() {
         ].map((_, i) => (
           <motion.div
             key={i}
-            className="w-full h-full bg-blue-600"
+            className="w-full h-full bg-neutral-700"
             variants={children}
             initial="hidden"
             animate={isOpen ? "exit" : "show"}
@@ -68,7 +68,7 @@ function Navbar() {
         <ul
           className={`${
             isOpen ? "hidden" : "block"
-          }w-[900px] leading-none space-y-2 text-[#eaeaea]`}
+          }w-[900px] leading-none space-y-2 text-[#ececec]`}
         >
           <li className="overflow-hidden">
             <motion.div
