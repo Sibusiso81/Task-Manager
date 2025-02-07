@@ -1,10 +1,8 @@
 import React from "react";
 import Image from "next/image";
-import { AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { Button } from "./ui/button";
 import { Menu, X } from "lucide-react";
-import Navbar from "./ui/Navbar";
 import { useState } from "react";
 export default function Home() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
