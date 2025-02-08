@@ -36,13 +36,10 @@ type ActionableStep = {
   strategies: string
 }
 
-
-
 function Page() {
   // State variables
   const [step, setStep] = useState(1)
   const [isComplete, setIsComplete] = useState(false)
-  const [geminiTasks, setGeminiTasks] = useState<string[]>([])
   const [formInfo, setFormInfo] = useState<string[]>([])
   const [apiKey, setApiKey] = useState<string>("")
   const [dailyFocus, setDailyFocus] = useState<string>()
@@ -90,10 +87,12 @@ function Page() {
   const handlePreviousStep = useCallback(() => setStep((prev) => prev - 1), [])
 
   const handleInputChange = (field: keyof typeof visionPurposeGoals) => (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const value = e.target.value
     setVisionPurposeGoals((prev) => ({
       ...prev,
-      [field]: e.target.value,
+      [field]: value,
     }))
+    visionForm.setValue(field, value)
   }
 
   const getUser = useCallback(
@@ -132,19 +131,20 @@ function Page() {
         console.error("No tasks to insert")
         toast.error("Something went wrong!")
       }
-    },[apiKey],
+    },
+    [apiKey],
   )
 
   const fetchGeminiTasks = useCallback(async () => {
-    const [name, vision, purpose, specificGoals] = formInfo
-    toast.success('Generating tasks')
+    const [name] = formInfo
+    toast.success("Generating tasks")
 
-    if (vision && purpose && specificGoals) {
+   
       try {
         toast.success("Compiling...")
-        
+
         const tasks = await getApiKey(
-          `Vision: ${vision}\nPurpose: ${purpose}\nSpecific Goals: ${specificGoals}`,
+          `Vision: ${visionPurposeGoals.vision}\nPurpose: ${visionPurposeGoals.purpose}\nSpecific Goals: ${visionPurposeGoals.specificGoals}`,
           apiKey,
         )
         if (!tasks) {
@@ -155,8 +155,6 @@ function Page() {
         const dataArray = JSON.parse(tasks)
         setActionableSteps(dataArray[0]["Actionable Steps"])
         setDailyFocus(dataArray[0]["Goal Summary"])
-        
-        setGeminiTasks(dataArray)
         if (Array.isArray(dataArray)) {
           await getUser(dataArray, name)
           setIsComplete(!isComplete)
@@ -164,14 +162,13 @@ function Page() {
         } else {
           toast.error("Invalid data type")
           setIsComplete(!isComplete)
-
         }
         redirect("/Tasks")
       } catch (error) {
-       console.log(error)
-      }
+        console.log(error)
+      
     }
-  }, [formInfo, apiKey, getUser, geminiTasks])
+  }, [apiKey, getUser, visionPurposeGoals, formInfo])
 
   const steps = [
     {
@@ -205,7 +202,7 @@ function Page() {
     visible: { opacity: 1, y: 0 },
     exit: { opacity: 0, y: -20 },
   }
-
+console.log(visionPurposeGoals)
   return (
     <main className="h-screen w-screen flex flex-col mx-auto items-center justify-center max-w-screen-md">
       <Toaster position="top-right" />
@@ -257,11 +254,9 @@ function Page() {
               <form
                 className="space-y-10"
                 onSubmit={visionForm.handleSubmit((data) => {
-                  setFormInfo((prev) => [...prev, data[currentStep.field as keyof typeof data]])
-                  setVisionPurposeGoals((prev) => ({
-                    ...prev,
-                    [currentStep.field]: data[currentStep.field as keyof typeof data],
-                  }))
+                  setFormInfo((prev) => [...prev, data.vision, data.purpose, data.specificGoals])
+                  setVisionPurposeGoals(data)
+                  console.log(visionPurposeGoals)
                   if (step < 4) {
                     handleNextStep()
                   } else {
@@ -286,10 +281,7 @@ function Page() {
                               placeholder={currentStep.placeholder}
                               rows={6}
                               className="w-full resize-none"
-                              onChange={(e) => {
-                                field.onChange(e)
-                                handleInputChange(currentStep.field as keyof typeof visionPurposeGoals)(e)
-                              }}
+                              onChange={handleInputChange(currentStep.field as keyof typeof visionPurposeGoals)}
                             />
                           </FormControl>
                           <FormMessage />
@@ -316,9 +308,7 @@ function Page() {
                         />
                       ))}
                     </div>
-                    <Button type="submit"
-                    onClick={handleNextStep}
-                    >
+                    <Button type="submit" onClick={handleNextStep}>
                       {step === 4 ? "Next" : "Next"}
                       <ChevronRight className="h-4 w-4 ml-2" />
                     </Button>
@@ -413,7 +403,9 @@ function Page() {
                       </ul>
                     </div>
                     <DialogFooter>
-                      <Link href={'/Tasks'}><Button >Agree & Continue</Button></Link>
+                      <Link href={"/Tasks"}>
+                        <Button>Agree & Continue</Button>
+                      </Link>
                       <Button variant="outline" onClick={handlePreviousStep}>
                         Back
                       </Button>

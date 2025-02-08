@@ -4,6 +4,8 @@ import Link from "next/link";
 import { Button } from "./ui/button";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
+import { AnimatePresence } from "framer-motion";
+import Navbar from "./ui/Navbar";
 export default function Home() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   return (
@@ -24,7 +26,7 @@ export default function Home() {
           </nav>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2  z-40">
           <div className="hidden lg:block">
             <Link href="/Auth/Login">
               <Button className="rounded-lg" variant="default">
@@ -34,7 +36,14 @@ export default function Home() {
           </div>
 
           <button onClick={() => setIsOpen(!isOpen)} className="lg:hidden">
-            {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            {isOpen ? <X className="h-6 w-6 z-40 relative" /> : <Menu className="h-6 w-6" />}
+            <AnimatePresence mode="wait">
+              {
+                isOpen&&(
+                  <Navbar/>
+                )
+              }
+            </AnimatePresence>
           </button>
         </div>
       </header>
