@@ -6,7 +6,6 @@ import logout from "@/app/Auth/Actions/Actions"
 import {  User,  } from "lucide-react"
 import { redirect } from "next/navigation"
 import { createClient } from "@/lib/supabase/client"
-import Link from "next/link"
 import { processTasksHistory ,
     type ProcessedTask,
 } from "@/lib/processTasksUtil"
@@ -49,15 +48,12 @@ function Page() {
         redirect("/GetStarted")
         
       }
-console.log(tasks)
 setName(tasks[0].name)
 
       const processedTasksHistory = processTasksHistory(tasks)
 /*       console.log("Processed tasks history:", processedTasksHistory)
  */      setProcessedTasks(processedTasksHistory)
- console.log(processedTasksHistory)
     }
-console.log(processedTasks)
     getUser()
   })
 
@@ -77,18 +73,15 @@ console.log(processedTasks)
       </DropdownMenuTrigger>
       <DropdownMenuSeparator/>
       <DropdownMenuContent>
-      <Link href={"/Tasks"}>
-          {" "}
-          <DropdownMenuItem>Tasks</DropdownMenuItem>
-        </Link>
-        <Link href={"/Tasks/TaskHistory"}>
-          {" "}
-          <DropdownMenuItem>Task history</DropdownMenuItem>
-        </Link>
-        <Link href={"/Tasks/TaskAssistant"}>
-          {" "}
-          <DropdownMenuItem>Task Assistant</DropdownMenuItem>
-        </Link>
+     <a href="/Tasks">
+             
+           <DropdownMenuItem>Tasks</DropdownMenuItem>
+            
+           </a>
+             <a href="/Tasks/TaskHistory">          <DropdownMenuItem>Task history</DropdownMenuItem>
+             </a>
+            <a href="/Tasks/TaskAssistant"><DropdownMenuItem>Task Assistant</DropdownMenuItem></a>
+               
         <DropdownMenuItem>
           <button
             onClick={logout}

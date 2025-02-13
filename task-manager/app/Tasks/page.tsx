@@ -19,7 +19,6 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import Link from "next/link";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -258,18 +257,15 @@ function Tasks() {
       </DropdownMenuTrigger>
       <DropdownMenuSeparator/>
       <DropdownMenuContent>
-      <Link href={"/Tasks"}>
-          {" "}
-          <DropdownMenuItem>Tasks</DropdownMenuItem>
-        </Link>
-        <Link href={"/Tasks/TaskHistory"}>
-          {" "}
-          <DropdownMenuItem>Task history</DropdownMenuItem>
-        </Link>
-        <Link href={"/Tasks/TaskAssistant"}>
-          {" "}
-          <DropdownMenuItem>Task Assistant</DropdownMenuItem>
-        </Link>
+      <a href="/Tasks">
+        
+      <DropdownMenuItem>Tasks</DropdownMenuItem>
+       
+      </a>
+        <a href="/Tasks/TaskHistory">          <DropdownMenuItem>Task history</DropdownMenuItem>
+        </a>
+       <a href="/Tasks/TaskAssistant"><DropdownMenuItem>Task Assistant</DropdownMenuItem></a>
+          
         <DropdownMenuItem>
           <button
             onClick={logout}

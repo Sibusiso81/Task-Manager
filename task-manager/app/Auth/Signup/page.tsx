@@ -128,7 +128,7 @@ function ProfileForm() {
 
 function page() {
   return (
-    <section className="max-w-screen-md h-screen flex flex-col -4 space-y-6 mx-auto justify-center items-center">
+    <section className="max-w-screen-md h-screen flex flex-col p-4 space-y-6 mx-auto justify-center items-center">
       <h1 className="text-2xl font-bold text-blue-600">Aspire ®</h1>
       <div className="w-full md:w-1/2  space-y-4 justify-center items-center lg:flex-row p">
         <h1 className="text-xl font-semibold text-center">Sign up</h1>

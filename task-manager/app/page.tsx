@@ -13,9 +13,10 @@ export default function page() {
   return (
     <main className="overflow-x-hidden ">
       <Home />
+      <Steps />
       <About />
       <Features />
-      <Steps />
+      
       <Contact />
     </main>
   );
