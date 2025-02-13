@@ -138,7 +138,6 @@ function Page() {
   const fetchGeminiTasks = useCallback(async () => {
     const [name] = formInfo
     toast.success("Generating tasks")
-
    
       try {
         toast.success("Compiling...")
@@ -149,6 +148,8 @@ function Page() {
         )
         if (!tasks) {
           toast.error("Error fetching tasks ")
+          toast.error('Oops ,Please try again')
+
           return
         }
 
@@ -165,6 +166,7 @@ function Page() {
         }
         redirect("/Tasks")
       } catch (error) {
+        toast.error('Oops ,Please try again')
         console.log(error)
       
     }
